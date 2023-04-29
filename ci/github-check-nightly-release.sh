@@ -6,7 +6,7 @@
 
 set -x
 tag=$TAG
-title="Velas nightly build"
+title="Exzo nightly build"
 commit_body="Commit: "
 pipeline_build="Build: https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
 pattern="s/.*${commit_body}([a-f0-9\]+)(\\s|$).*/\\1/p"
@@ -45,7 +45,7 @@ if git merge-base --is-ancestor ${release_commit} HEAD; then
         hub release delete ${tag}
         hub release create -p -F release.md ${tag}
     fi
-    for file in velas-release-$TARGET.yml velas-install-init-$TARGET$EXE_EXT velas-release-$TARGET.tar.bz2; do
+    for file in exzo-release-$TARGET.yml exzo-install-init-$TARGET$EXE_EXT exzo-release-$TARGET.tar.bz2; do
         hub release edit -a "$file" -m ''  ${tag}
     done
 else

@@ -138,10 +138,10 @@ pub enum RpcRequest {
     EthTraceReplayTransaction,
     EthTraceReplayBlock,
 
-    /// Velas Account scope
-    GetVelasAccountsByOperationalKey,
-    GetVelasAccountsByOwnerKey,
-    GetVelasRelyingPartiesByOwnerKey,
+    /// Exzo Account scope
+    GetExzoAccountsByOperationalKey,
+    GetExzoAccountsByOwnerKey,
+    GetExzoRelyingPartiesByOwnerKey,
 
     /// Debug scope
     DebugRecoverBlockHeader,
@@ -240,9 +240,9 @@ impl fmt::Display for RpcRequest {
             RpcRequest::EthEstimateGas => "eth_estimateGas",
             RpcRequest::EthGetLogs => "eth_getLogs",
             RpcRequest::EthSyncing => "eth_syncing",
-            RpcRequest::GetVelasAccountsByOperationalKey => "getVelasAccountsByOperationalKey",
-            RpcRequest::GetVelasAccountsByOwnerKey => "getVelasAccountsByOwnerKey",
-            RpcRequest::GetVelasRelyingPartiesByOwnerKey => "getVelasRelyingPartiesByOwnerKey",
+            RpcRequest::GetExzoAccountsByOperationalKey => "getExzoAccountsByOperationalKey",
+            RpcRequest::GetExzoAccountsByOwnerKey => "getExzoAccountsByOwnerKey",
+            RpcRequest::GetExzoRelyingPartiesByOwnerKey => "getExzoRelyingPartiesByOwnerKey",
             RpcRequest::DebugRecoverBlockHeader => "debug_recoverBlockHeader",
         };
 

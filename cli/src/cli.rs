@@ -411,7 +411,7 @@ pub enum CliCommand {
         derived_address_seed: Option<String>,
         derived_address_program_id: Option<Pubkey>,
     },
-    // Velas EVM Commands
+    // Exzo EVM Commands
     Evm(EvmCliCommand),
 }
 
@@ -429,11 +429,11 @@ pub enum CliError {
     ClientError(#[from] ClientError),
     #[error("Command not recognized: {0}")]
     CommandNotRecognized(String),
-    #[error("Account {1} has insufficient funds for fee ({0} VLX)")]
+    #[error("Account {1} has insufficient funds for fee ({0} XZO)")]
     InsufficientFundsForFee(f64, Pubkey),
-    #[error("Account {1} has insufficient funds for spend ({0} VLX)")]
+    #[error("Account {1} has insufficient funds for spend ({0} XZO)")]
     InsufficientFundsForSpend(f64, Pubkey),
-    #[error("Account {2} has insufficient funds for spend ({0} VLX) + fee ({1} VLX)")]
+    #[error("Account {2} has insufficient funds for spend ({0} XZO) + fee ({1} XZO)")]
     InsufficientFundsForSpendAndFee(f64, f64, Pubkey),
     #[error(transparent)]
     InvalidNonce(nonce_utils::Error),
@@ -659,7 +659,7 @@ pub fn parse_command(
                 crate_description!(),
                 solana_version::version!(),
             )
-            .gen_completions_to("velas", shell_choice, &mut stdout());
+            .gen_completions_to("exzo", shell_choice, &mut stdout());
             std::process::exit(0);
         }
         // Cluster Query Commands
@@ -2071,7 +2071,7 @@ mod tests {
             pubkey: None,
             use_lamports_unit: false,
         };
-        assert_eq!(process_command(&config).unwrap(), "0.0000004 VLX");
+        assert_eq!(process_command(&config).unwrap(), "0.0000004 XZO");
 
         let good_signature = Signature::new(&bs58::decode(SIGNATURE).into_vec().unwrap());
         config.command = CliCommand::Confirm(good_signature);

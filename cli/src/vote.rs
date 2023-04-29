@@ -316,7 +316,7 @@ impl VoteSubCommands for App<'_, '_> {
                     Arg::with_name("lamports")
                         .long("lamports")
                         .takes_value(false)
-                        .help("Display balance in lamports instead of VLX"),
+                        .help("Display balance in lamports instead of XZO"),
                 )
                 .arg(
                     Arg::with_name("with_rewards")
@@ -350,7 +350,7 @@ impl VoteSubCommands for App<'_, '_> {
                         .index(2)
                         .value_name("RECIPIENT_ADDRESS")
                         .required(true),
-                        "The recipient of withdrawn VLX. "),
+                        "The recipient of withdrawn XZO. "),
                 )
                 .arg(
                     Arg::with_name("amount")
@@ -359,7 +359,7 @@ impl VoteSubCommands for App<'_, '_> {
                         .takes_value(true)
                         .required(true)
                         .validator(is_amount_or_all)
-                        .help("The amount to withdraw, in VLX"),
+                        .help("The amount to withdraw, in XZO"),
                 )
                 .arg(
                     Arg::with_name("authorized_withdrawer")

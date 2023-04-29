@@ -1469,7 +1469,7 @@ impl Bank {
     #[allow(clippy::too_many_arguments)]
     pub fn new_with_paths(
         genesis_config: &GenesisConfig,
-        // TODO(velas): Remove option, currently need for Bank::new/default, that is used for tests
+        // TODO(exzo): Remove option, currently need for Bank::new/default, that is used for tests
         evm_paths: Option<(&Path, &Path)>,
         paths: Vec<PathBuf>,
         debug_keys: Option<Arc<HashSet<Pubkey>>>,
@@ -1500,7 +1500,7 @@ impl Bank {
             )
             .unwrap()
         } else {
-            //TODO(velas): Rename default to test
+            //TODO(exzo): Rename default to test
             evm_state::EvmState::default()
         };
         let mut bank = Self::default_with_accounts(accounts, evm_state);
@@ -3622,7 +3622,7 @@ impl Bank {
 
     pub fn evm_burn_fee_activated(&self) -> bool {
         self.feature_set
-            .is_active(&feature_set::velas::burn_fee::id())
+            .is_active(&feature_set::exzo::burn_fee::id())
     }
 
     /// Prepare a transaction batch from a list of legacy transactions. Used for tests only.
@@ -3970,7 +3970,7 @@ impl Bank {
             }
         } else if self
             .feature_set
-            .is_active(&feature_set::velas::disable_durable_nonce::id())
+            .is_active(&feature_set::exzo::disable_durable_nonce::id())
         {
             return None;
         }
@@ -4189,11 +4189,11 @@ impl Bank {
                     evm_state::EvmConfig::new(self.evm_chain_id, self.evm_burn_fee_activated()),
                     evm_state::executor::FeatureSet::new(
                         self.feature_set
-                            .is_active(&solana_sdk::feature_set::velas::unsigned_tx_fix::id()),
+                            .is_active(&solana_sdk::feature_set::exzo::unsigned_tx_fix::id()),
                         self.feature_set
-                            .is_active(&solana_sdk::feature_set::velas::clear_logs_on_error::id()),
+                            .is_active(&solana_sdk::feature_set::exzo::clear_logs_on_error::id()),
                         self.feature_set
-                            .is_active(&solana_sdk::feature_set::velas::accept_zero_gas_price_with_native_fee::id()),
+                            .is_active(&solana_sdk::feature_set::exzo::accept_zero_gas_price_with_native_fee::id()),
                     ),
                 );
                 Some(evm_executor)
@@ -4244,10 +4244,10 @@ impl Bank {
             process_message_time.as_us()
         );
 
-        //TODO(velas): Move evm_state apply to update executors
+        //TODO(exzo): Move evm_state apply to update executors
         let evm_new_error_handling = self
             .feature_set
-            .is_active(&solana_sdk::feature_set::velas::evm_new_error_handling::id());
+            .is_active(&solana_sdk::feature_set::exzo::evm_new_error_handling::id());
 
         if let Some(evm_executor) = evm_executor {
             let executor = Rc::try_unwrap(evm_executor)
@@ -4261,7 +4261,7 @@ impl Bank {
             {
                 let clear_logs = self
                     .feature_set
-                    .is_active(&solana_sdk::feature_set::velas::clear_logs_on_native_error::id());
+                    .is_active(&solana_sdk::feature_set::exzo::clear_logs_on_native_error::id());
                 evm_patch
                     .as_mut()
                     .expect("Evm patch should exist, on transaction execution.")
@@ -5268,12 +5268,12 @@ impl Bank {
 
     fn fix_spv_proofs_evm(&self) -> bool {
         self.feature_set
-            .is_active(&feature_set::velas::hardfork_pack::id())
+            .is_active(&feature_set::exzo::hardfork_pack::id())
     }
 
     fn fix_recent_blockhashes_sysvar_evm(&self) -> bool {
         self.feature_set
-            .is_active(&feature_set::velas::hardfork_pack::id())
+            .is_active(&feature_set::exzo::hardfork_pack::id())
     }
 
     fn fixed_cycle_partitions(&self) -> Vec<Partition> {
@@ -6895,7 +6895,7 @@ impl Bank {
                 &new_feature_activations,
             );
             self.reconfigure_token2_native_mint(
-                new_feature_activations.contains(&feature_set::velas::hardfork_pack::id()),
+                new_feature_activations.contains(&feature_set::exzo::hardfork_pack::id()),
             );
         }
         self.ensure_no_storage_rewards_pool();
@@ -7048,7 +7048,7 @@ impl Bank {
         }
     }
 
-    fn reconfigure_token2_native_mint(&mut self, reconfigure_token2_native_mint_velas: bool) {
+    fn reconfigure_token2_native_mint(&mut self, reconfigure_token2_native_mint_exzo: bool) {
         let reconfigure_token2_native_mint_old = match self.cluster_type() {
             ClusterType::Development => true,
             ClusterType::Devnet => true,
@@ -7058,7 +7058,7 @@ impl Bank {
 
         // It's okay if we trigget two activations sequentionally.
         let reconfigure_token2_native_mint =
-            reconfigure_token2_native_mint_old || reconfigure_token2_native_mint_velas;
+            reconfigure_token2_native_mint_old || reconfigure_token2_native_mint_exzo;
 
         if reconfigure_token2_native_mint {
             let mut native_mint_account = solana_sdk::account::AccountSharedData::from(Account {
@@ -7098,7 +7098,7 @@ impl Bank {
             ClusterType::Development => false,
             // never do this for devnet; we're pristine here. :)
             ClusterType::Devnet => false,
-            // tds is not exist in velas so dont do this
+            // tds is not exist in exzo so dont do this
             ClusterType::Testnet => false,
             // never do this for stable; we're pristine here. :)
             ClusterType::MainnetBeta => false,
@@ -10516,7 +10516,7 @@ pub(crate) mod tests {
         let alice = Keypair::new();
         let bob = Keypair::new();
 
-        bank.activate_feature(&feature_set::velas::evm_instruction_borsh_serialization::id());
+        bank.activate_feature(&feature_set::exzo::evm_instruction_borsh_serialization::id());
         fn fund_evm(from_keypair: &Keypair, hash: Hash, lamports: u64) -> Transaction {
             let tx = solana_evm_loader_program::processor::dummy_call(0).0;
             let from_pubkey = from_keypair.pubkey();
@@ -10657,7 +10657,7 @@ pub(crate) mod tests {
             let (genesis_config, mint_keypair) = create_genesis_config(20000 * (num_sleeps + 3));
             let mut bank = Bank::new_for_tests(&genesis_config);
 
-            bank.activate_feature(&feature_set::velas::evm_instruction_borsh_serialization::id());
+            bank.activate_feature(&feature_set::exzo::evm_instruction_borsh_serialization::id());
             let sleep_program_id = solana_sdk::pubkey::new_rand();
             bank.add_builtin(
                 "solana_sleep_program",
@@ -10750,9 +10750,9 @@ pub(crate) mod tests {
         let (genesis_config, mint_keypair) = create_genesis_config(40000);
         let mut bank = Bank::new_for_tests(&genesis_config);
 
-        bank.activate_feature(&feature_set::velas::native_swap_in_evm_history::id());
-        bank.activate_feature(&feature_set::velas::evm_new_error_handling::id());
-        bank.activate_feature(&feature_set::velas::evm_instruction_borsh_serialization::id());
+        bank.activate_feature(&feature_set::exzo::native_swap_in_evm_history::id());
+        bank.activate_feature(&feature_set::exzo::evm_new_error_handling::id());
+        bank.activate_feature(&feature_set::exzo::evm_instruction_borsh_serialization::id());
         let recent_hash = genesis_config.hash();
 
         let tx = fund_evm(&mint_keypair, recent_hash, 20000);
@@ -10848,9 +10848,9 @@ pub(crate) mod tests {
         let (genesis_config, mint_keypair) = create_genesis_config(20000);
         let mut bank = Bank::new_for_tests(&genesis_config);
 
-        bank.activate_feature(&feature_set::velas::native_swap_in_evm_history::id());
-        bank.activate_feature(&feature_set::velas::evm_new_error_handling::id());
-        bank.activate_feature(&feature_set::velas::evm_instruction_borsh_serialization::id());
+        bank.activate_feature(&feature_set::exzo::native_swap_in_evm_history::id());
+        bank.activate_feature(&feature_set::exzo::evm_new_error_handling::id());
+        bank.activate_feature(&feature_set::exzo::evm_instruction_borsh_serialization::id());
         let recent_hash = genesis_config.hash();
 
         let tx = fund_evm_with_revert(&mint_keypair, receiver, recent_hash, 20000);
@@ -10871,7 +10871,7 @@ pub(crate) mod tests {
         let state = evm_state.get_account_state(receiver).unwrap_or_default();
         assert_eq!(state.balance, 0.into());
         let state_swapper = evm_state
-            .get_account_state(*solana_evm_loader_program::precompiles::ETH_TO_VLX_ADDR)
+            .get_account_state(*solana_evm_loader_program::precompiles::ETH_TO_XZO_ADDR)
             .unwrap_or_default();
         assert_eq!(state_swapper.nonce, 1.into());
         assert_eq!(state_swapper.balance, 0.into());
@@ -10915,9 +10915,9 @@ pub(crate) mod tests {
         let (genesis_config, mint_keypair) = create_genesis_config(20000);
         let mut bank = Bank::new_for_tests(&genesis_config);
 
-        bank.activate_feature(&feature_set::velas::native_swap_in_evm_history::id());
-        bank.activate_feature(&feature_set::velas::evm_new_error_handling::id());
-        bank.activate_feature(&feature_set::velas::evm_instruction_borsh_serialization::id());
+        bank.activate_feature(&feature_set::exzo::native_swap_in_evm_history::id());
+        bank.activate_feature(&feature_set::exzo::evm_new_error_handling::id());
+        bank.activate_feature(&feature_set::exzo::evm_instruction_borsh_serialization::id());
         let recent_hash = genesis_config.hash();
 
         let tx = fund_evm_with_evm_call(&mint_keypair, receiver, recent_hash, 20000, 0);
@@ -10939,7 +10939,7 @@ pub(crate) mod tests {
         assert_eq!(state.balance, 0.into());
         assert_eq!(state.nonce, 1.into());
         let state_swapper = evm_state
-            .get_account_state(*solana_evm_loader_program::precompiles::ETH_TO_VLX_ADDR)
+            .get_account_state(*solana_evm_loader_program::precompiles::ETH_TO_XZO_ADDR)
             .unwrap_or_default();
         assert_eq!(state_swapper.nonce, 1.into());
         assert_eq!(state_swapper.balance, 0.into());
@@ -10971,9 +10971,9 @@ pub(crate) mod tests {
         let (genesis_config, mint_keypair) = create_genesis_config(20000);
         let mut bank = Bank::new_for_tests(&genesis_config);
 
-        bank.activate_feature(&feature_set::velas::native_swap_in_evm_history::id());
-        bank.activate_feature(&feature_set::velas::evm_new_error_handling::id());
-        bank.activate_feature(&feature_set::velas::evm_instruction_borsh_serialization::id());
+        bank.activate_feature(&feature_set::exzo::native_swap_in_evm_history::id());
+        bank.activate_feature(&feature_set::exzo::evm_new_error_handling::id());
+        bank.activate_feature(&feature_set::exzo::evm_instruction_borsh_serialization::id());
         let recent_hash = genesis_config.hash();
 
         let tx = fund_evm(&mint_keypair, receiver, recent_hash, 20000);
@@ -10997,7 +10997,7 @@ pub(crate) mod tests {
             solana_evm_loader_program::scope::evm::lamports_to_gwei(20000)
         ); // 10^9 times bigger
         let state_swapper = evm_state
-            .get_account_state(*solana_evm_loader_program::precompiles::ETH_TO_VLX_ADDR)
+            .get_account_state(*solana_evm_loader_program::precompiles::ETH_TO_XZO_ADDR)
             .unwrap_or_default();
         assert_eq!(state_swapper.nonce, 1.into());
         assert_eq!(state_swapper.balance, 0.into());
@@ -11010,7 +11010,7 @@ pub(crate) mod tests {
         let (genesis_config, mint_keypair) = create_genesis_config(2_000);
         let mut bank0 = Bank::new_for_tests(&genesis_config);
 
-        bank0.activate_feature(&feature_set::velas::evm_instruction_borsh_serialization::id());
+        bank0.activate_feature(&feature_set::exzo::evm_instruction_borsh_serialization::id());
         let mut rng = evm_state::rand::thread_rng();
         let sender = evm_state::SecretKey::new(&mut rng);
         let sender_addr = sender.to_address();
@@ -11098,7 +11098,7 @@ pub(crate) mod tests {
         let (genesis_config, mint_keypair) = create_genesis_config(2_000);
         let mut bank0 = Bank::new_for_tests(&genesis_config);
 
-        bank0.activate_feature(&feature_set::velas::evm_instruction_borsh_serialization::id());
+        bank0.activate_feature(&feature_set::exzo::evm_instruction_borsh_serialization::id());
         let mut rng = evm_state::rand::thread_rng();
         let sender = evm_state::SecretKey::new(&mut rng);
         let sender_addr = sender.to_address();
@@ -16626,7 +16626,7 @@ pub(crate) mod tests {
             .unwrap();
         genesis_config
             .accounts
-            .remove(&feature_set::full_inflation::devnet_and_testnet_velas_mainnet::id())
+            .remove(&feature_set::full_inflation::devnet_and_testnet_exzo_mainnet::id())
             .unwrap();
         for pair in feature_set::FULL_INFLATION_FEATURE_PAIRS.iter() {
             genesis_config.accounts.remove(&pair.vote_id);
@@ -16661,7 +16661,7 @@ pub(crate) mod tests {
         // Request `full_inflation::devnet_and_testnet` activation,
         // which takes priority over pico_inflation
         bank.store_account(
-            &feature_set::full_inflation::devnet_and_testnet_velas_mainnet::id(),
+            &feature_set::full_inflation::devnet_and_testnet_exzo_mainnet::id(),
             &feature::create_account(
                 &Feature {
                     activated_at: Some(2),
@@ -16707,7 +16707,7 @@ pub(crate) mod tests {
             .unwrap();
         genesis_config
             .accounts
-            .remove(&feature_set::full_inflation::devnet_and_testnet_velas_mainnet::id())
+            .remove(&feature_set::full_inflation::devnet_and_testnet_exzo_mainnet::id())
             .unwrap();
         for pair in feature_set::FULL_INFLATION_FEATURE_PAIRS.iter() {
             genesis_config.accounts.remove(&pair.vote_id);
@@ -16742,7 +16742,7 @@ pub(crate) mod tests {
         // Request `full_inflation::mainnet::certusone` activation,
         // which takes priority over pico_inflation
         bank.store_account(
-            &feature_set::full_inflation::devnet_and_testnet_velas_mainnet::id(),
+            &feature_set::full_inflation::devnet_and_testnet_exzo_mainnet::id(),
             &feature::create_account(
                 &Feature {
                     activated_at: Some(2),
@@ -16760,7 +16760,7 @@ pub(crate) mod tests {
         // Request `full_inflation::devnet_and_testnet` activation,
         // which should have no effect on `get_inflation_start_slot`
         bank.store_account(
-            &feature_set::full_inflation::devnet_and_testnet_velas_mainnet::id(),
+            &feature_set::full_inflation::devnet_and_testnet_exzo_mainnet::id(),
             &feature::create_account(
                 &Feature {
                     activated_at: Some(bank.slot()),
@@ -16785,7 +16785,7 @@ pub(crate) mod tests {
             .unwrap();
         genesis_config
             .accounts
-            .remove(&feature_set::full_inflation::devnet_and_testnet_velas_mainnet::id())
+            .remove(&feature_set::full_inflation::devnet_and_testnet_exzo_mainnet::id())
             .unwrap();
         for pair in feature_set::FULL_INFLATION_FEATURE_PAIRS.iter() {
             genesis_config.accounts.remove(&pair.vote_id);
@@ -16820,7 +16820,7 @@ pub(crate) mod tests {
         // Activate full_inflation::devnet_and_testnet
         let full_inflation_activation_slot = bank.slot();
         bank.store_account(
-            &feature_set::full_inflation::devnet_and_testnet_velas_mainnet::id(),
+            &feature_set::full_inflation::devnet_and_testnet_exzo_mainnet::id(),
             &feature::create_account(
                 &Feature {
                     activated_at: Some(full_inflation_activation_slot),

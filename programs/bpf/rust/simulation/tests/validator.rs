@@ -7,7 +7,7 @@ use {
         sysvar,
     },
     solana_sdk::{signature::Signer, transaction::Transaction},
-    velas_validator::test_validator::*,
+    exzo_validator::test_validator::*,
 };
 
 #[test]

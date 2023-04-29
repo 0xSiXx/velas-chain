@@ -1,5 +1,5 @@
 [package]
-authors = ["Maksim Vykhota <m.vykhota@protonmail.com>", "Velas"]
+authors = ["Maksim Vykhota <m.vykhota@protonmail.com>", "Exzo"]
 name = "evm-block-recovery"
 version = "0.1.0"
 edition = "2021"

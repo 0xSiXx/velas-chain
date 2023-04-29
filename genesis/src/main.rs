@@ -654,7 +654,7 @@ fn main() -> Result<(), Box<dyn error::Error>> {
     ) {
         solana_runtime::genesis_utils::activate_all_features(&mut genesis_config);
     } else {
-        solana_runtime::genesis_utils::activate_velas_features_on_prod(&mut genesis_config);
+        solana_runtime::genesis_utils::activate_exzo_features_on_prod(&mut genesis_config);
     }
 
     if let Some(files) = matches.values_of("primordial_accounts_file") {

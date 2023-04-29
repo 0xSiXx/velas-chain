@@ -32,7 +32,7 @@ function get_cluster_version {
 
 function get_token_capitalization {
     totalSupplyLamports="$(curl -s -X POST -H "Content-Type: application/json" -d '{"jsonrpc":"2.0","id":1, "method":"getTotalSupply"}' "$url" | cut -d , -f 2 | cut -d : -f 2)"
-    totalSupplySol=$((totalSupplyLamports / LAMPORTS_PER_VLX))
+    totalSupplySol=$((totalSupplyLamports / LAMPORTS_PER_XZO))
     
     printf "\n--- Token Capitalization ---\n"
     printf "Total token capitalization %'d SOL\n" "$totalSupplySol"
@@ -55,7 +55,7 @@ for account in ${accountBalancesLamports[@]}; do
     totalAccountBalancesLamports=$((totalAccountBalancesLamports + account))
     numberOfAccounts=$((numberOfAccounts + 1))
 done
-totalAccountBalancesSol=$((totalAccountBalancesLamports / LAMPORTS_PER_VLX))
+totalAccountBalancesSol=$((totalAccountBalancesLamports / LAMPORTS_PER_XZO))
 
 printf "\n--- %s Account Balance Totals ---\n" "$PROGRAM_NAME"
 printf "Number of %s Program accounts: %'.f\n" "$PROGRAM_NAME" "$numberOfAccounts"
@@ -91,7 +91,7 @@ grandTotalAccountBalancesSol=$((systemAccountBalanceTotalSol + stakeAccountBalan
 grandTotalAccountBalancesLamports=$((systemAccountBalanceTotalLamports + stakeAccountBalanceTotalLamports + voteAccountBalanceTotalLamports + configAccountBalanceTotalLamports))
 
 printf "\n--- Total Token Distribution in all Account Balances ---\n"
-printf "Total VLX in all Account Balances: %'d\n" "$grandTotalAccountBalancesSol"
+printf "Total XZO in all Account Balances: %'d\n" "$grandTotalAccountBalancesSol"
 printf "Total Lamports in all Account Balances: %'d\n" "$grandTotalAccountBalancesLamports"
 }
 
@@ -99,7 +99,7 @@ url=$1
 [[ -n $url ]] || usage "Missing required RPC URL"
 shift
 
-LAMPORTS_PER_VLX=1000000000 # 1 billion
+LAMPORTS_PER_XZO=1000000000 # 1 billion
 
 stakeAccountBalanceTotalSol=
 systemAccountBalanceTotalSol=
@@ -154,7 +154,7 @@ if ((airdrops_enabled)); then
     echo "--keypair argument must be provided"
     exit 1
   fi
-  $velas_cli \
+  $exzo_cli \
     "${common_args[@]}" --keypair "$SOLANA_CONFIG_DIR/faucet.json" \
     transfer --allow-unfunded-recipient "$keypair" "$stake_sol"
 fi
@@ -164,16 +164,16 @@ if [[ -n $keypair ]]; then
 fi
 
 if ! [[ -f "$stake_account" ]]; then
-  $velas_keygen new --no-passphrase -so "$stake_account"
+  $exzo_keygen new --no-passphrase -so "$stake_account"
 else
   echo "$stake_account already exists! Using it"
 fi
 
 set -x
-$velas_cli "${common_args[@]}" \
+$exzo_cli "${common_args[@]}" \
   vote-account "$vote_account"
-$velas_cli "${common_args[@]}" \
+$exzo_cli "${common_args[@]}" \
   create-stake-account "$stake_account" "$stake_sol"
-$velas_cli "${common_args[@]}" \
+$exzo_cli "${common_args[@]}" \
   delegate-stake $maybe_force "$stake_account" "$vote_account"
-$velas_cli "${common_args[@]}" stakes "$stake_account"
+$exzo_cli "${common_args[@]}" stakes "$stake_account"

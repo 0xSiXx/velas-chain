@@ -22,8 +22,8 @@ lazy_static! {
     static ref SYSTEM_PROGRAM_ID: Pubkey = system_program::id();
     static ref SYSVAR_PROGRAM_ID: Pubkey = sysvar::id();
     static ref VOTE_PROGRAM_ID: Pubkey = solana_vote_program::id();
-    static ref VELAS_ACCOUNT_PROGRAM_ID: Pubkey = velas_account_program::id();
-    static ref VELAS_RELYING_PARTY_PROGRAM_ID: Pubkey = velas_relying_party_program::id();
+    static ref EXZO_ACCOUNT_PROGRAM_ID: Pubkey = exzo_account_program::id();
+    static ref EXZO_RELYING_PARTY_PROGRAM_ID: Pubkey = exzo_relying_party_program::id();
     pub static ref PARSABLE_PROGRAM_IDS: HashMap<Pubkey, ParsableAccount> = {
         let mut m = HashMap::new();
         m.insert(
@@ -38,10 +38,10 @@ lazy_static! {
         m.insert(*STAKE_PROGRAM_ID, ParsableAccount::Stake);
         m.insert(*SYSVAR_PROGRAM_ID, ParsableAccount::Sysvar);
         m.insert(*VOTE_PROGRAM_ID, ParsableAccount::Vote);
-        m.insert(*VELAS_ACCOUNT_PROGRAM_ID, ParsableAccount::VelasAccount);
+        m.insert(*EXZO_ACCOUNT_PROGRAM_ID, ParsableAccount::ExzoAccount);
         m.insert(
-            *VELAS_RELYING_PARTY_PROGRAM_ID,
-            ParsableAccount::VelasRelyingParty,
+            *EXZO_RELYING_PARTY_PROGRAM_ID,
+            ParsableAccount::ExzoRelyingParty,
         );
         m
     };
@@ -65,21 +65,21 @@ pub enum ParseAccountError {
     SerdeJsonError(#[from] serde_json::error::Error),
 }
 
-impl From<velas_account_program::ParseError> for ParseAccountError {
-    fn from(err: velas_account_program::ParseError) -> Self {
+impl From<exzo_account_program::ParseError> for ParseAccountError {
+    fn from(err: exzo_account_program::ParseError) -> Self {
         match err {
-            velas_account_program::ParseError::AccountNotParsable => {
-                Self::AccountNotParsable(ParsableAccount::VelasAccount)
+            exzo_account_program::ParseError::AccountNotParsable => {
+                Self::AccountNotParsable(ParsableAccount::ExzoAccount)
             }
         }
     }
 }
 
-impl From<velas_relying_party_program::ParseError> for ParseAccountError {
-    fn from(err: velas_relying_party_program::ParseError) -> Self {
+impl From<exzo_relying_party_program::ParseError> for ParseAccountError {
+    fn from(err: exzo_relying_party_program::ParseError) -> Self {
         match err {
-            velas_relying_party_program::ParseError::AccountNotParsable => {
-                Self::AccountNotParsable(ParsableAccount::VelasRelyingParty)
+            exzo_relying_party_program::ParseError::AccountNotParsable => {
+                Self::AccountNotParsable(ParsableAccount::ExzoRelyingParty)
             }
         }
     }
@@ -103,8 +103,8 @@ pub enum ParsableAccount {
     Stake,
     Sysvar,
     Vote,
-    VelasAccount,
-    VelasRelyingParty,
+    ExzoAccount,
+    ExzoRelyingParty,
 }
 
 #[derive(Default)]
@@ -134,11 +134,11 @@ pub fn parse_account_data(
         ParsableAccount::Stake => serde_json::to_value(parse_stake(data)?)?,
         ParsableAccount::Sysvar => serde_json::to_value(parse_sysvar(data, pubkey)?)?,
         ParsableAccount::Vote => serde_json::to_value(parse_vote(data)?)?,
-        ParsableAccount::VelasAccount => {
-            serde_json::to_value(velas_account_program::VelasAccountType::try_from(data)?)?
+        ParsableAccount::ExzoAccount => {
+            serde_json::to_value(exzo_account_program::ExzoAccountType::try_from(data)?)?
         }
-        ParsableAccount::VelasRelyingParty => serde_json::to_value(
-            velas_relying_party_program::RelyingPartyData::try_from(data)?,
+        ParsableAccount::ExzoRelyingParty => serde_json::to_value(
+            exzo_relying_party_program::RelyingPartyData::try_from(data)?,
         )?,
     };
     Ok(ParsedAccount {

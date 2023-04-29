@@ -60,8 +60,8 @@ evm-state = { path = "../evm-utils/evm-state" }
 solana-evm-loader-program = { path = "../evm-utils/programs/evm_loader" }
 snafu = "0.7"
 sha3 = "0.10"
-velas-account-program = { path = "../programs/velas-account-program" }
-velas-relying-party-program = { path = "../programs/velas-relying-party-program" }
+exzo-account-program = { path = "../programs/exzo-account-program" }
+exzo-relying-party-program = { path = "../programs/exzo-relying-party-program" }
 tracing = "0.1.29"
 tracing-subscriber = { version = "0.3", default-features = false, features = [
     "smallvec",

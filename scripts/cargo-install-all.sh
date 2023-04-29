@@ -77,12 +77,12 @@ if [[ $CI_OS_NAME = windows ]]; then
     # Limit windows to end-user command-line tools.  Full validator support is not
     # yet available on windows
     BINS=(
-        velas
-        velas-install
-        velas-install-init
-        velas-keygen
+        exzo
+        exzo-install
+        exzo-install-init
+        exzo-keygen
         evm-bridge
-        velas-test-validator
+        exzo-test-validator
     )
 else
     ./fetch-perf-libs.sh
@@ -90,14 +90,14 @@ else
     
     
     BINS=(
-        velas
-        velas-faucet
-        velas-gossip
-        velas-install
-        velas-install-init
-        velas-keygen
-        velas-test-validator
-        velas-validator
+        exzo
+        exzo-faucet
+        exzo-gossip
+        exzo-install
+        exzo-install-init
+        exzo-keygen
+        exzo-test-validator
+        exzo-validator
         solana-ledger-tool
         evm-bridge
         rbpf-cli
@@ -115,7 +115,7 @@ else
     
     #XXX: Ensure `solana-genesis` is built LAST!
     # See https://github.com/solana-labs/solana/issues/5826
-    BINS+=(velas-genesis)
+    BINS+=(exzo-genesis)
 fi
 
 binArgs=()

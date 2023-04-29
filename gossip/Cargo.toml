@@ -63,7 +63,7 @@ name = "crds_gossip_pull"
 name = "crds_shards"
 
 [[bin]]
-name = "velas-gossip"
+name = "exzo-gossip"
 path = "src/main.rs"
 
 [package.metadata.docs.rs]

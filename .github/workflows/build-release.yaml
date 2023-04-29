@@ -103,9 +103,9 @@ jobs:
         with: 
           draft: true
           files: |
-            velas-release-${{ matrix.target }}.tar.bz2
-            velas-release-${{ matrix.target }}.yml
-            velas-install-init-${{ matrix.target }}${{matrix.exe_ext}}
+            exzo-release-${{ matrix.target }}.tar.bz2
+            exzo-release-${{ matrix.target }}.yml
+            exzo-install-init-${{ matrix.target }}${{matrix.exe_ext}}
           
       - name: Upload bpf
         uses: softprops/action-gh-release@v1

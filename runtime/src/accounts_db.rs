@@ -3183,10 +3183,10 @@ impl AccountsDb {
             IndexKey::ProgramId(key) => key,
             IndexKey::SplTokenMint(key) => key,
             IndexKey::SplTokenOwner(key) => key,
-            IndexKey::VelasAccountStorage(key) => key,
-            IndexKey::VelasAccountOwner(key) => key,
-            IndexKey::VelasAccountOperational(key) => key,
-            IndexKey::VelasRelyingOwner(key) => key,
+            IndexKey::ExzoAccountStorage(key) => key,
+            IndexKey::ExzoAccountOwner(key) => key,
+            IndexKey::ExzoAccountOperational(key) => key,
+            IndexKey::ExzoRelyingOwner(key) => key,
         };
 
         if !self.account_indexes.include_key(key) {

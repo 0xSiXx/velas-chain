@@ -8,7 +8,7 @@ use solana_transaction_status::{
 pub struct ParsedInstructions {
     pub instructions: Vec<v0::EvmInstruction>,
     pub only_trivial_instructions: bool,
-    pub has_velas_account_instruction: bool,
+    pub has_exzo_account_instruction: bool,
 }
 
 impl ParsedInstructions {
@@ -65,7 +65,7 @@ impl ParsedInstructions {
                 })
                 .count()
             > 0
-            || self.has_velas_account_instruction
+            || self.has_exzo_account_instruction
     }
 }
 
@@ -76,12 +76,12 @@ pub trait NativeBlockExt {
 impl NativeBlockExt for ConfirmedBlockWithOptionalMetadata {
     fn parse_instructions(&self) -> ParsedInstructions {
         use std::str::FromStr;
-        let velas_account_pk =
+        let exzo_account_pk =
             solana_sdk::pubkey::Pubkey::from_str("VAcccHVjpknkW5N5R9sfRppQxYJrJYVV7QJGKchkQj5")
                 .unwrap();
         let mut only_trivial_instructions = true;
         let mut instructions = vec![];
-        let mut has_velas_account_instruction = false;
+        let mut has_exzo_account_instruction = false;
 
         for TransactionWithOptionalMetadata { transaction, .. } in &self.transactions {
             for CompiledInstruction {
@@ -103,14 +103,14 @@ impl NativeBlockExt for ConfirmedBlockWithOptionalMetadata {
 
                     instructions.push(instruction);
                 } else if transaction.message.account_keys[*program_id_index as usize]
-                    == velas_account_pk
+                    == exzo_account_pk
                     && transaction
                         .message
                         .account_keys
                         .iter()
                         .any(|k| *k == STATIC_PROGRAM_ID)
                 {
-                    has_velas_account_instruction = true;
+                    has_exzo_account_instruction = true;
                 }
             }
         }
@@ -118,7 +118,7 @@ impl NativeBlockExt for ConfirmedBlockWithOptionalMetadata {
         ParsedInstructions {
             instructions,
             only_trivial_instructions,
-            has_velas_account_instruction,
+            has_exzo_account_instruction,
         }
     }
 }

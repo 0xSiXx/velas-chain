@@ -166,7 +166,7 @@ pub fn main() -> Result<(), Error> {
 
     let runtime = tokio::runtime::Builder::new_multi_thread()
         .worker_threads(10)
-        .thread_name("velas-state-rpc-worker")
+        .thread_name("exzo-state-rpc-worker")
         .enable_all()
         .build()?;
 

@@ -166,9 +166,9 @@ where
 //
 // 0x56454c41532d434841494e000000000053574150 for better search
 // TODO: Implement some procedural macro to render this in more
-pub static ETH_TO_VLX_ADDR: Lazy<H160> = Lazy::new(|| {
+pub static ETH_TO_XZO_ADDR: Lazy<H160> = Lazy::new(|| {
     H160::from_str(concat!(
-        "56454c41532d434841494e", // 'VELAS-CHAIN'
+        "56454c41532d434841494e", // 'EXZO-CHAIN'
         "0000000000",             // just spaces
         "53574150",               // 'SWAP'
     ))
@@ -188,7 +188,7 @@ pub struct EthToVlxResult {
     amount: u64,
 }
 
-pub static ETH_TO_VLX_CODE: Lazy<NativeContract<EthToVlxImp, Pubkey>> = Lazy::new(|| {
+pub static ETH_TO_XZO_CODE: Lazy<NativeContract<EthToVlxImp, Pubkey>> = Lazy::new(|| {
     #[allow(deprecated)]
     let abi = Function {
         name: String::from("transferToNative"),
@@ -209,12 +209,12 @@ pub static ETH_TO_VLX_CODE: Lazy<NativeContract<EthToVlxImp, Pubkey>> = Lazy::ne
     ) -> Result<(PrecompileOutput, u64, Vec<EthToVlxResult>)> {
         // EVM should ensure that user has enough tokens, before calling this precompile.
 
-        log::trace!("Precompile ETH_TO_VLX");
+        log::trace!("Precompile ETH_TO_XZO");
 
         if !matches!(
             cx.precompile_context.call_scheme,
             None | Some(CallScheme::Call)
-        ) || cx.precompile_context.evm_context.address != *ETH_TO_VLX_ADDR
+        ) || cx.precompile_context.evm_context.address != *ETH_TO_XZO_ADDR
         // if transfer to other address
         {
             log::trace!(
@@ -271,7 +271,7 @@ pub static ETH_TO_VLX_CODE: Lazy<NativeContract<EthToVlxImp, Pubkey>> = Lazy::ne
     }
 
     fn handle_promise(accounts: AccountStructure, promise: EthToVlxResult) -> Result<()> {
-        log::trace!("Promise handle ETH_TO_VLX {:?}", promise);
+        log::trace!("Promise handle ETH_TO_XZO {:?}", promise);
         let lamports = promise.amount;
         let pubkey = promise.pubkey;
         let user = if let Some(account) = accounts.find_user(&pubkey) {

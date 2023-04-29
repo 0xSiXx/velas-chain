@@ -143,7 +143,7 @@ pub async fn restore_chain(
     for (id, nb) in native_dict.into_iter() {
         let parsed_instructions = nb.parse_instructions();
         if (!parsed_instructions.only_trivial_instructions
-            || parsed_instructions.has_velas_account_instruction)
+            || parsed_instructions.has_exzo_account_instruction)
             && blocks_json
                 .get(&(header_template.block_number + 1))
                 .is_none()

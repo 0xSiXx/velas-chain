@@ -75,7 +75,7 @@ use {
         sync::{Arc, RwLock},
         time::{Duration, SystemTime},
     },
-    velas_validator::{
+    exzo_validator::{
         admin_rpc_service, bootstrap, dashboard::Dashboard, ledger_lockfile, lock_ledger,
         new_spinner_progress_bar, println_name_value, redirect_stderr_to_file,
     },
@@ -605,7 +605,7 @@ pub fn main() {
                 .takes_value(true)
                 .requires("evm_state_archive_path")
                 .requires("evm_height_index_source")
-                .validator(velas_validator::port_validator)
+                .validator(exzo_validator::port_validator)
                 .help("Enable evm state rpc on this port"),
         )
         .arg(
@@ -718,7 +718,7 @@ pub fn main() {
                 .long("rpc-port")
                 .value_name("PORT")
                 .takes_value(true)
-                .validator(velas_validator::port_validator)
+                .validator(exzo_validator::port_validator)
                 .help("Enable JSON RPC on this port, and the next port for the RPC websocket"),
         )
         .arg(
@@ -927,7 +927,7 @@ pub fn main() {
                 .value_name("MIN_PORT-MAX_PORT")
                 .takes_value(true)
                 .default_value(default_dynamic_port_range)
-                .validator(velas_validator::port_range_validator)
+                .validator(exzo_validator::port_range_validator)
                 .help("Range to use for dynamically assigned ports"),
         )
         .arg(
@@ -1452,7 +1452,7 @@ pub fn main() {
                 .long("accountsdb-repl-port")
                 .value_name("PORT")
                 .takes_value(true)
-                .validator(velas_validator::port_validator)
+                .validator(exzo_validator::port_validator)
                 .hidden(true)
                 .help("Enable AccountsDb Replication Service on this port"),
         )
@@ -1565,10 +1565,10 @@ pub fn main() {
                     "program-id",
                     "spl-token-owner",
                     "spl-token-mint",
-                    "velas-accounts-storages",
-                    "velas-accounts-owners",
-                    "velas-accounts-operationals",
-                    "velas-relying-party-owners",
+                    "exzo-accounts-storages",
+                    "exzo-accounts-owners",
+                    "exzo-accounts-operationals",
+                    "exzo-relying-party-owners",
                 ])
                 .value_name("INDEX")
                 .help("Enable an accounts index, indexed by the selected account field"),
@@ -2074,7 +2074,7 @@ pub fn main() {
         let logfile = matches
             .value_of("logfile")
             .map(|s| s.into())
-            .unwrap_or_else(|| format!("velas-validator-{}.log", identity_keypair.pubkey()));
+            .unwrap_or_else(|| format!("exzo-validator-{}.log", identity_keypair.pubkey()));
 
         if logfile == "-" {
             None
@@ -2895,10 +2895,10 @@ fn process_account_indexes(matches: &ArgMatches) -> AccountSecondaryIndexes {
             "program-id" => AccountIndex::ProgramId,
             "spl-token-mint" => AccountIndex::SplTokenMint,
             "spl-token-owner" => AccountIndex::SplTokenOwner,
-            "velas-accounts-storages" => AccountIndex::VelasAccountStorage,
-            "velas-accounts-owners" => AccountIndex::VelasAccountOwner,
-            "velas-accounts-operationals" => AccountIndex::VelasAccountOperational,
-            "velas-relying-party-owners" => AccountIndex::VelasRelyingOwner,
+            "exzo-accounts-storages" => AccountIndex::ExzoAccountStorage,
+            "exzo-accounts-owners" => AccountIndex::ExzoAccountOwner,
+            "exzo-accounts-operationals" => AccountIndex::ExzoAccountOperational,
+            "exzo-relying-party-owners" => AccountIndex::ExzoRelyingOwner,
             unexpected => panic!("Unable to handle account_index {}", unexpected),
         })
         .collect();

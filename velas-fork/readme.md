@@ -1,9 +1,9 @@
-# Velas fork maintenance guide and tools
+# Exzo fork maintenance guide and tools
 
-Velas is a fork of Solana blockchain.
+Exzo is a fork of Solana blockchain.
 This document will describe how we treat code, and manage branches.
 
-## Velas releases
+## Exzo releases
 Solana has edge/beta/stable branches:
 - edge is only used on testnet;
 - beta is some kind of migration, early adoption of edge codebase to the mainnet;
@@ -12,22 +12,22 @@ Solana has edge/beta/stable branches:
 Fixes are ported on all three branches edge/beta/stable.
 New features are only mooved to the edge.
 
-**In Velas Some of Solana changes (especially security fixes) are ported dirrectly to Velas repository.**
+**In Exzo Some of Solana changes (especially security fixes) are ported dirrectly to Exzo repository.**
 
-In Velas we use `develop` branch as a single source of code.
+In Exzo we use `develop` branch as a single source of code.
 - Our develop branch are tested on testnet and devnet.
 - Realeases are tagged dirrectly on develop, and only those releases are used by validator.
 - We don't have multi branches for testnet/mainnet purposes, because most of our network related features are already tested on solana edge branch.
 
 
 ## Merging solana features
-At some point of time we do a "full-update" which merge all solana changes to the velas develop.
+At some point of time we do a "full-update" which merge all solana changes to the exzo develop.
 
 Merging are done using `git merge` and most of conflicts should be resolved manually, to make it easier for person who are resolving this conflicts.
-In this document we describe some common parts that can be treat differently, and trying to document what changes are done in solana codebase by velas.
+In this document we describe some common parts that can be treat differently, and trying to document what changes are done in solana codebase by exzo.
 
 Short algorithm describing how to handle full update:
-1. Pointing out what files was changed in velas since last full-update.
+1. Pointing out what files was changed in exzo since last full-update.
 For doing this we save special file called `solana-base` which contain single line - solana release tag that was used during last update.
 ** Note: ':!docs' ':!explorer' ':!web3.js' - are ignored folders
 `git diff $TAG --numstat -- ':!docs' ':!explorer' ':!web3.js'`
@@ -36,7 +36,7 @@ We remove js related stuff from our monorepo
 `git rm -rf docs web3.js explorer`
 3. Ignore crates that was rewritted by us 
 `git checkout --theirs install`
-4. Ignore files that wasnt modified by velas (checkout number 1 of this algorithm)
+4. Ignore files that wasnt modified by exzo (checkout number 1 of this algorithm)
 `git checkout --theirs __`
 5. Solve remaining conflicts by groups:
 To solve conflicts we recommend to use some kind of 3way merging tools, like beyond compare
@@ -67,7 +67,7 @@ As algorithm that solve problems, use follow:
 
 
 
-## Velas versioning
+## Exzo versioning
 Currently we dont use major version, and instead using minor and patch.
 - Patch version are used when some small changes or feature is implemented.
 - Major version are increased when "full-update" is done, or when some backward incompatible change is done - like snapshot version bumping.

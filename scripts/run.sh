@@ -22,7 +22,7 @@ fi
 PATH=$PWD/target/$profile:$PATH
 
 ok=true
-for program in velas-{faucet,genesis,keygen,validator}; do
+for program in exzo-{faucet,genesis,keygen,validator}; do
     $program -V || ok=false
 done
 $ok || {
@@ -42,27 +42,27 @@ ledgerDir=$PWD/config/ledger
 SOLANA_RUN_SH_CLUSTER_TYPE=${SOLANA_RUN_SH_CLUSTER_TYPE:-development}
 
 set -x
-if ! velas address; then
+if ! exzo address; then
     echo Generating default keypair
-    velas-keygen new --no-passphrase
+    exzo-keygen new --no-passphrase
 fi
 validator_identity="$dataDir/validator-identity.json"
 if [[ -e $validator_identity ]]; then
     echo "Use existing validator keypair"
 else
-    velas-keygen new --no-passphrase -so "$validator_identity"
+    exzo-keygen new --no-passphrase -so "$validator_identity"
 fi
 validator_vote_account="$dataDir/validator-vote-account.json"
 if [[ -e $validator_vote_account ]]; then
     echo "Use existing validator vote account keypair"
 else
-    velas-keygen new --no-passphrase -so "$validator_vote_account"
+    exzo-keygen new --no-passphrase -so "$validator_vote_account"
 fi
 validator_stake_account="$dataDir/validator-stake-account.json"
 if [[ -e $validator_stake_account ]]; then
     echo "Use existing validator stake account keypair"
 else
-    velas-keygen new --no-passphrase -so "$validator_stake_account"
+    exzo-keygen new --no-passphrase -so "$validator_stake_account"
 fi
 
 if [[ -e "$ledgerDir"/genesis.bin || -e "$ledgerDir"/genesis.tar.bz2 ]]; then
@@ -74,7 +74,7 @@ else
     fi
     
     # shellcheck disable=SC2086
-    velas-genesis \
+    exzo-genesis \
     --hashes-per-tick sleep \
     --faucet-lamports 500000000000000000 \
     --bootstrap-validator \
@@ -88,7 +88,7 @@ else
     $SOLANA_RUN_SH_GENESIS_ARGS
     # --evm-root="0x7b343e0165c8f354ac7b1e7e7889389f42927ccb9d0330b3036fb749e12795ba" \
     # --evm-state-file="../state.json" \
-    # --evm-chain-id 111\
+    # --evm-chain-id 1229\
 fi
 
 abort() {
@@ -98,7 +98,7 @@ abort() {
 }
 trap abort INT TERM EXIT
 
-velas-faucet &
+exzo-faucet &
 faucet=$!
 
 args=(
@@ -122,13 +122,13 @@ args=(
     --account-index program-id
     --account-index spl-token-owner
     --account-index spl-token-mint
-    --account-index velas-accounts-storages
-    --account-index velas-accounts-owners
-    --account-index velas-accounts-operationals
+    --account-index exzo-accounts-storages
+    --account-index exzo-accounts-owners
+    --account-index exzo-accounts-operationals
     --evm-state-archive "$ledgerDir"/archive-evm
 )
 # shellcheck disable=SC2086
-velas-validator "${args[@]}" $SOLANA_RUN_SH_VALIDATOR_ARGS &
+exzo-validator "${args[@]}" $SOLANA_RUN_SH_VALIDATOR_ARGS &
 validator=$!
 
 wait "$validator"

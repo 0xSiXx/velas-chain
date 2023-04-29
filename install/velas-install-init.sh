@@ -16,19 +16,19 @@
 { # this ensures the entire script is downloaded #
     
     if [ -z "$SOLANA_DOWNLOAD_ROOT" ]; then
-        SOLANA_DOWNLOAD_ROOT="https://github.com/velas/velas-chain/releases/download/"
+        SOLANA_DOWNLOAD_ROOT="https://github.com/ExzoNetwork/Exzo-Network-Blockchain/releases/download/"
     fi
-    GH_LATEST_RELEASE="https://api.github.com/repos/velas/velas-chain/releases/latest"
+    GH_LATEST_RELEASE="https://api.github.com/repos/ExzoNetwork/Exzo-Network-Blockchain/releases/latest"
     
     set -e
     
     usage() {
     cat 1>&2 <<EOF
-velas-install-init
+exzo-install-init
 initializes a new installation
 
 USAGE:
-    velas-install-init [FLAGS] [OPTIONS] --data_dir <PATH> --pubkey <PUBKEY>
+    exzo-install-init [FLAGS] [OPTIONS] --data_dir <PATH> --pubkey <PUBKEY>
 
 FLAGS:
     -h, --help              Prints help information
@@ -74,7 +74,7 @@ EOF
             ;;
         esac
         
-        temp_dir="$(mktemp -d 2>/dev/null || ensure mktemp -d -t velas-install-init)"
+        temp_dir="$(mktemp -d 2>/dev/null || ensure mktemp -d -t exzo-install-init)"
         ensure mkdir -p "$temp_dir"
         
         # Check for SOLANA_RELEASE environment variable override.  Otherwise fetch
@@ -94,8 +94,8 @@ EOF
             fi
         fi
         
-        download_url="$SOLANA_DOWNLOAD_ROOT/$release/velas-install-init-$TARGET"
-        solana_install_init="$temp_dir/velas-install-init"
+        download_url="$SOLANA_DOWNLOAD_ROOT/$release/exzo-install-init-$TARGET"
+        solana_install_init="$temp_dir/exzo-install-init"
         
         printf 'downloading %s installer\n' "$release" 1>&2
         
@@ -104,14 +104,14 @@ EOF
         ensure chmod u+x "$solana_install_init"
         if [ ! -x "$solana_install_init" ]; then
             printf '%s\n' "Cannot execute $solana_install_init (likely because of mounting /tmp as noexec)." 1>&2
-            printf '%s\n' "Please copy the file to a location where you can execute binaries and run ./velas-install-init." 1>&2
+            printf '%s\n' "Please copy the file to a location where you can execute binaries and run ./exzo-install-init." 1>&2
             exit 1
         fi
         
         if [ -z "$1" ]; then
             #shellcheck disable=SC2086
             ignore "$solana_install_init" $SOLANA_INSTALL_INIT_ARGS "$(echo $release | cut -c2-)";
-            elif [ "$1" = "LATEST_VELAS_RELEASE" ]; then
+            elif [ "$1" = "LATEST_EXZO_RELEASE" ]; then
             ignore "$solana_install_init" $SOLANA_INSTALL_INIT_ARGS "$(echo $release | cut -c2-)"
         else
             ignore "$solana_install_init" "$@"
@@ -125,7 +125,7 @@ EOF
     }
     
     err() {
-        printf 'velas-install-init: %s\n' "$1" >&2
+        printf 'exzo-install-init: %s\n' "$1" >&2
         exit 1
     }
     

@@ -40,11 +40,11 @@ where
                 .global(true)
                 .takes_value(true)
                 .value_name("URL")
-                .help("RPC entrypoint address. i.e. https://api.devnet.velas.com"),
+                .help("RPC entrypoint address. i.e. https://rpc-dev-1.exzo.network/rpc"),
         )
         .subcommand(
             SubCommand::with_name("distribute-tokens")
-                .about("Distribute VLX")
+                .about("Distribute XZO")
                 .arg(
                     Arg::with_name("db_path")
                         .long("db-path")
@@ -71,7 +71,7 @@ where
                         .takes_value(true)
                         .value_name("AMOUNT")
                         .validator(is_amount)
-                        .help("The amount to send to each recipient, in VLX"),
+                        .help("The amount to send to each recipient, in XZO"),
                 )
                 .arg(
                     Arg::with_name("dry_run")
@@ -235,8 +235,8 @@ where
                         .default_value("1.0")
                         .long("unlocked-vlx")
                         .takes_value(true)
-                        .value_name("VLX_AMOUNT")
-                        .help("Amount of VLX to put in system account to pay for fees"),
+                        .value_name("XZO_AMOUNT")
+                        .help("Amount of XZO to put in system account to pay for fees"),
                 )
                 .arg(
                     Arg::with_name("stake_authority")

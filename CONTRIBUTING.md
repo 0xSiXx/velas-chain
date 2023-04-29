@@ -1,4 +1,4 @@
-# Velas Coding Guidelines
+# Exzo Coding Guidelines
 
 The goal of these guidelines is to improve developer productivity by allowing
 developers to jump into any file in the codebase and not need to adapt to

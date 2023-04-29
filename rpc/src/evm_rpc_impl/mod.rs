@@ -191,7 +191,7 @@ impl GeneralERPC for GeneralErpcImpl {
     type Metadata = Arc<JsonRpcRequestProcessor>;
 
     fn client_version(&self, _meta: Self::Metadata) -> Result<String, Error> {
-        Ok(String::from("velas-chain/v0.5.0"))
+        Ok(String::from("exzo-chain/v0.5.0"))
     }
 
     fn sha3(&self, _meta: Self::Metadata, bytes: Bytes) -> Result<Hex<H256>, Error> {
@@ -813,9 +813,9 @@ impl TraceERPC for TraceErpcImpl {
                     .collect();
 
                 // Shortcut for swap tokens to native, will add solana account to transaction.
-                if address == *ETH_TO_VLX_ADDR {
+                if address == *ETH_TO_XZO_ADDR {
                     debug!("Found transferToNative transaction");
-                    match ETH_TO_VLX_CODE.parse_abi(&input) {
+                    match ETH_TO_XZO_CODE.parse_abi(&input) {
                         Ok(pk) => {
                             info!("Adding account to meta = {}", pk);
 
@@ -841,7 +841,7 @@ impl TraceERPC for TraceErpcImpl {
             let mut is_native_tx = false;
             if Some(Hex(U256::from(0x1))) == tx.s {
                 // check if it native swap, then predeposit, amount, to pass transaction
-                if caller == *ETH_TO_VLX_ADDR {
+                if caller == *ETH_TO_XZO_ADDR {
                     let amount = value + gas_limit * gas_price;
                     executor.deposit(caller, amount)
                 }
@@ -871,7 +871,7 @@ impl TraceERPC for TraceErpcImpl {
                     tx_hash,
                     true,
                     simulation_entrypoint(
-                        PrecompileSet::VelasClassic,
+                        PrecompileSet::ExzoClassic,
                         &evm_keyed_account,
                         &user_accounts,
                     ),
@@ -1101,11 +1101,11 @@ fn call_many(
         estimate_config,
         evm_state::executor::FeatureSet::new(
             bank.feature_set
-                .is_active(&solana_sdk::feature_set::velas::unsigned_tx_fix::id()),
+                .is_active(&solana_sdk::feature_set::exzo::unsigned_tx_fix::id()),
             bank.feature_set
-                .is_active(&solana_sdk::feature_set::velas::clear_logs_on_error::id()),
+                .is_active(&solana_sdk::feature_set::exzo::clear_logs_on_error::id()),
             bank.feature_set.is_active(
-                &solana_sdk::feature_set::velas::accept_zero_gas_price_with_native_fee::id(),
+                &solana_sdk::feature_set::exzo::accept_zero_gas_price_with_native_fee::id(),
             ),
         ),
     );
@@ -1167,9 +1167,9 @@ fn call_inner(
             .collect();
 
         // Shortcut for swap tokens to native, will add solana account to transaction.
-        if address == *ETH_TO_VLX_ADDR {
+        if address == *ETH_TO_XZO_ADDR {
             debug!("Found transferToNative transaction");
-            match ETH_TO_VLX_CODE.parse_abi(&input) {
+            match ETH_TO_XZO_CODE.parse_abi(&input) {
                 Ok(pk) => {
                     info!("Adding account to meta = {}", pk);
 
@@ -1190,7 +1190,7 @@ fn call_inner(
     // system transfers always set s = 0x1
     if Some(Hex(U256::from(0x1))) == tx.s {
         // check if it native swap, then predeposit, amount, to pass transaction
-        if caller == *ETH_TO_VLX_ADDR {
+        if caller == *ETH_TO_XZO_ADDR {
             let amount = value + gas_limit * gas_price;
             executor.deposit(caller, amount)
         }
@@ -1226,7 +1226,7 @@ fn call_inner(
             tx_hash,
             true,
             simulation_entrypoint(
-                PrecompileSet::VelasClassic,
+                PrecompileSet::ExzoClassic,
                 &evm_keyed_account,
                 &user_accounts,
             ),

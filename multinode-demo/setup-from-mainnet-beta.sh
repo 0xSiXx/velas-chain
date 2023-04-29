@@ -36,19 +36,19 @@ mkdir -p "$SOLANA_CONFIG_DIR"/bootstrap-validator
 if [[ -r $FAUCET_KEYPAIR ]]; then
   cp -f "$FAUCET_KEYPAIR" "$SOLANA_CONFIG_DIR"/faucet.json
 else
-  $velas_keygen new --no-passphrase -fso "$SOLANA_CONFIG_DIR"/faucet.json
+  $exzo_keygen new --no-passphrase -fso "$SOLANA_CONFIG_DIR"/faucet.json
 fi
 
 if [[ -f $BOOTSTRAP_VALIDATOR_IDENTITY_KEYPAIR ]]; then
   cp -f "$BOOTSTRAP_VALIDATOR_IDENTITY_KEYPAIR" "$SOLANA_CONFIG_DIR"/bootstrap-validator/identity.json
 else
-  $velas_keygen new --no-passphrase -so "$SOLANA_CONFIG_DIR"/bootstrap-validator/identity.json
+  $exzo_keygen new --no-passphrase -so "$SOLANA_CONFIG_DIR"/bootstrap-validator/identity.json
 fi
 
-$velas_keygen new --no-passphrase -so "$SOLANA_CONFIG_DIR"/bootstrap-validator/vote-account.json
-$velas_keygen new --no-passphrase -so "$SOLANA_CONFIG_DIR"/bootstrap-validator/stake-account.json
+$exzo_keygen new --no-passphrase -so "$SOLANA_CONFIG_DIR"/bootstrap-validator/vote-account.json
+$exzo_keygen new --no-passphrase -so "$SOLANA_CONFIG_DIR"/bootstrap-validator/stake-account.json
 
-$velas_ledger_tool create-snapshot \
+$exzo_ledger_tool create-snapshot \
   --ledger "$SOLANA_CONFIG_DIR"/latest-mainnet-beta-snapshot \
   --faucet-pubkey "$SOLANA_CONFIG_DIR"/faucet.json \
   --faucet-lamports 500000000000000000 \
@@ -58,7 +58,7 @@ $velas_ledger_tool create-snapshot \
   --hashes-per-tick sleep \
   "$snapshot_slot" "$SOLANA_CONFIG_DIR"/bootstrap-validator
 
-$velas_ledger_tool modify-genesis \
+$exzo_ledger_tool modify-genesis \
   --ledger "$SOLANA_CONFIG_DIR"/latest-mainnet-beta-snapshot \
   --hashes-per-tick sleep \
   "$SOLANA_CONFIG_DIR"/bootstrap-validator

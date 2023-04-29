@@ -110,8 +110,8 @@ pub struct GenesisConfig {
     pub evm_chain_id: u64,
 }
 
-pub static EVM_MAINNET_CHAIN_ID: u64 = 106;
-pub static EVM_TESTNET_CHAIN_ID: u64 = 111;
+pub static EVM_MAINNET_CHAIN_ID: u64 = 1229;
+pub static EVM_TESTNET_CHAIN_ID: u64 = 2370;
 pub static EVM_DEVELOP_CHAIN_ID: u64 = 0xdead;
 
 // useful for basic tests
@@ -287,7 +287,7 @@ impl GenesisConfig {
         } else {
             warn!("Generating genesis with empty evm state");
             match self.cluster_type {
-                ClusterType::Development | ClusterType::Devnet => (),
+                ClusterType::MainnetBeta | ClusterType::Testnet | ClusterType::Development | ClusterType::Devnet => (),
                 cluster_type => {
                     return Err(std::io::Error::new(
                         std::io::ErrorKind::Other,
@@ -378,7 +378,7 @@ impl fmt::Display for GenesisConfig {
              {:?}\n\
              {:?}\n\
              {:?}\n\
-             Capitalization: {} VLX in {} accounts\n\
+             Capitalization: {} XZO in {} accounts\n\
              Native instruction processors: {:#?}\n\
              Rewards pool: {:#?}\n\
              EVM chain id: {}\n\

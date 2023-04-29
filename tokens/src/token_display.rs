@@ -7,7 +7,7 @@ use {
     },
 };
 
-const VLX_SYMBOL: &str = "◎";
+const XZO_SYMBOL: &str = "◎";
 
 #[derive(PartialEq)]
 pub enum TokenType {
@@ -26,7 +26,7 @@ impl Token {
         match &self.token_type {
             TokenType::Sol => {
                 let amount = lamports_to_sol(self.amount);
-                write!(f, "{}{}", VLX_SYMBOL, amount)
+                write!(f, "{}{}", XZO_SYMBOL, amount)
             }
             TokenType::SplToken => {
                 let amount = real_number_string_trimmed(self.amount, self.decimals);

@@ -6016,8 +6016,8 @@ dependencies = [
  "solana-vote-program",
  "spl-token",
  "thiserror",
- "velas-account-program",
- "velas-relying-party-program",
+ "exzo-account-program",
+ "exzo-relying-party-program",
  "zstd",
 ]
 
@@ -6558,8 +6558,8 @@ dependencies = [
  "thiserror",
  "tokio",
  "trees",
- "velas-account-program",
- "velas-relying-party-program",
+ "exzo-account-program",
+ "exzo-relying-party-program",
 ]
 
 [[package]]
@@ -7413,7 +7413,7 @@ dependencies = [
  "tokio",
  "tonic 0.8.3",
  "tonic-build 0.8.4",
- "velas-validator",
+ "exzo-validator",
 ]
 
 [[package]]
@@ -7480,8 +7480,8 @@ dependencies = [
  "tracing-attributes",
  "tracing-opentelemetry 0.16.0",
  "tracing-subscriber 0.3.17",
- "velas-account-program",
- "velas-relying-party-program",
+ "exzo-account-program",
+ "exzo-relying-party-program",
 ]
 
 [[package]]
@@ -7569,8 +7569,8 @@ dependencies = [
  "tar",
  "tempfile",
  "thiserror",
- "velas-account-program",
- "velas-relying-party-program",
+ "exzo-account-program",
+ "exzo-relying-party-program",
  "walkdir",
  "zstd",
 ]
@@ -9360,7 +9360,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f1bddf1187be692e79c5ffeab891132dfb0f236ed36a43c7ed39f1165ee20191"
 
 [[package]]
-name = "velas-account-program"
+name = "exzo-account-program"
 version = "0.0.1"
 dependencies = [
  "base64 0.13.1",
@@ -9371,7 +9371,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "velas-install"
+name = "exzo-install"
 version = "1.9.29"
 dependencies = [
  "atty",
@@ -9404,7 +9404,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "velas-relying-party-program"
+name = "exzo-relying-party-program"
 version = "0.0.1"
 dependencies = [
  "borsh",
@@ -9415,7 +9415,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "velas-validator"
+name = "exzo-validator"
 version = "1.9.29"
 dependencies = [
  "chrono",
